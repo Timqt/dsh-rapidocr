@@ -70,6 +70,8 @@ DNS: 223.5.5.5, 119.29.29.29
 状态：已连接 速度：100Mbps
 ```
 
+![Input image with detection boxes and the text ocr_image returned](docs/images/ocr_image_demo.png)
+
 ## Platform support
 
 **Windows x64 only in this release.** The bundled ONNX Runtime ships as a
