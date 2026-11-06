@@ -1,0 +1,59 @@
+{
+  "name": "dsh-rapidocr",
+  "version": "0.1.0",
+  "description": "Local CPU OCR for DeepSeek Harness: a model-facing ocr_image tool that reads text out of PNG and JPEG files on this machine, with no GPU, no network call and no vision model.",
+  "license": "Apache-2.0",
+  "type": "module",
+  "main": "index.js",
+  "icon": "./icon.svg",
+  "exports": {
+    ".": "./index.js",
+    "./cordis.patch.yml": "./cordis.patch.yml",
+    "./locale/*.json": "./locale/*.json",
+    "./icon": "./icon.svg",
+    "./package.json": "./package.json"
+  },
+  "files": [
+    "index.js",
+    "cordis.patch.yml",
+    "locale/*.json",
+    "icon.svg",
+    "models/*.onnx",
+    "src/",
+    "worker/",
+    "vendor/**/*",
+    "NOTICE",
+    "LICENSE",
+    "README.md"
+  ],
+  "keywords": [
+    "dsh",
+    "dsh-plugin",
+    "deepseek-harness",
+    "ocr",
+    "rapidocr",
+    "onnxruntime",
+    "image-text",
+    "local",
+    "offline"
+  ],
+  "author": "Timqt",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Timqt/dsh-rapidocr.git",
+    "directory": "packages/dsh-rapidocr"
+  },
+  "homepage": "https://github.com/Timqt/dsh-rapidocr/tree/main/packages/dsh-rapidocr#readme",
+  "bugs": "https://github.com/Timqt/dsh-rapidocr/issues",
+  "engines": {
+    "dsh": ">=0.2.2-rc.1 <0.3.0-0"
+  },
+  "dsh": {
+    "bundle": {
+      "patch": "./cordis.patch.yml"
+    }
+  },
+  "publishConfig": {
+    "access": "public"
+  }
+}

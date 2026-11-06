@@ -1,0 +1,6 @@
+{
+  "meta": {
+    "title": "Local OCR",
+    "description": "Recognises text in images on this machine with a local CPU OCR engine. Images never leave the computer."
+  }
+}

@@ -1,0 +1,36 @@
+﻿== package == D:\feiniukexinhome\Code\DSH-rapidocr\bench\.venv\Lib\site-packages\rapidocr_onnxruntime\__init__.py
+== bundled models ==
+   ch_PP-OCRv3_det_infer.onnx                   2.32 MB
+   ch_PP-OCRv3_rec_infer.onnx                  10.20 MB
+   ch_ppocr_mobile_v2.0_cls_infer.onnx          0.56 MB
+   TOTAL models: 13.07 MB
+
+== model init: 448 ms ==
+
+== dense_1920x1080.png ==
+   cold   1774.4 ms | warm median   1197.4 ms | lines 6/6 | hits 6/6 | rss 0 MB
+     [0.879] 第1行:本地推理无需 GPU，模型体积约 15 MB
+     [0.808] 第 2 行:文本检测 DBNet +方向分类 + CRNN 识别
+     [0.919] 第3行：支持中英文混排，倾斜矫正
+     [0.914] 第 4 行: The quick brown fox jumps over the lazy dog
+     [0.904] 第5行：识别结果JSON结构化返回
+     [0.870] 第 6 行:插件形态为 Host bundle,inject tools
+
+== screenshot_1280x720.png ==
+   cold    914.5 ms | warm median    633.1 ms | lines 6/6 | hits 5/6 | rss 0 MB
+     [0.873] 系统设置／网络配置
+     [0.903] IP地址：192.168.1.108
+     [0.911] 子网掩码：255.255.255.0
+     [0.894] DNS: 223.5.5.5, 119.29.29.29
+     [0.904] 状态：已连接速度：100Mbps
+     [0.876] Saved successfully at 09:42:11
+
+== zh_en_800x600.png ==
+   cold   1154.1 ms | warm median    668.6 ms | lines 5/5 | hits 5/5 | rss 0 MB
+     [0.872] 本地部署 RapidOCR 视觉识别
+     [0.939] DeepSeekHarness插件评估报告
+     [0.908] CPU inference: 12.5 ms / line
+     [0.885] Order No.A-2024-0917 Total:1,280.00
+     [0.892] 联系电话138-0013-8000
+
+wrote report_python.json

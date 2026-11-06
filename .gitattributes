@@ -1,0 +1,5 @@
+# Vendored third-party code and prebuilt binaries are committed byte-for-byte.
+# Marking them -text keeps Git from rewriting line endings, so the tree in the
+# repository is identical to the tree that ships inside the npm tarball.
+packages/dsh-rapidocr/vendor/** -text
+packages/dsh-rapidocr/models/** -text

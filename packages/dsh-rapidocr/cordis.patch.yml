@@ -1,0 +1,5 @@
+- insert:
+    - id: rapidocr
+      name: dsh-rapidocr
+      config:
+        enabled: true

@@ -1,0 +1,41 @@
+@local/dsh-rapidocr
+Copyright 2026 the dsh-rapidocr authors.
+
+This product bundles third-party components. Their licenses apply to the
+respective components; the full license texts ship inside each vendored
+package under vendor/node_modules/<package>/.
+
+--------------------------------------------------------------------------------
+RapidOCR / PaddleOCR PP-OCRv3 models  —  Apache License 2.0
+--------------------------------------------------------------------------------
+The OCR pipeline in src/ is a port of RapidOCR
+(https://github.com/RapidAI/RapidOCR, Copyright 2021-2024 SWHL), which in turn
+derives from PaddleOCR
+(https://github.com/PaddlePaddle/PaddleOCR, Copyright 2022 PaddlePaddle Authors).
+
+The ONNX models in models/ are the PP-OCRv3 Chinese text detection, recognition
+and direction-classification models, converted and distributed by RapidOCR
+under the Apache License 2.0.
+
+  ch_PP-OCRv3_det_infer.onnx            2.32 MB
+  ch_PP-OCRv3_rec_infer.onnx           10.20 MB
+  ch_ppocr_mobile_v2.0_cls_infer.onnx  0.56 MB
+
+The recognition character dictionary (6623 entries) is embedded in the
+recognition model's ONNX metadata and is read at runtime; it is not a separate
+file.
+
+--------------------------------------------------------------------------------
+Vendored runtime dependencies
+--------------------------------------------------------------------------------
+onnxruntime-node 1.31.1      MIT      ONNX Runtime, Microsoft Corporation
+onnxruntime-common 1.31.1    MIT      ONNX Runtime, Microsoft Corporation
+@techstark/opencv-js 5.0.0-release.1  Apache-2.0  OpenCV.js build of OpenCV 5.0.0
+pngjs 7.0.0                  MIT      PNG decoding
+clipper-lib 6.4.2            BSL-1.0  Clipper polygon offsetting library
+jpeg-js 0.4.4                BSD-3-Clause  Baseline JPEG decoding
+@deepseek-ai/schemastery 3.18.5  MIT  Configuration schema (host settings editor)
+@deepseek-ai/cosmokit 1.8.6      MIT  Utility library used by schemastery
+
+The OpenCV.js build is the same OpenCV 5.0.0 release that the Python
+reference implementation used, so the geometry primitives behave identically.

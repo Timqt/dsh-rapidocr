@@ -1,0 +1,41 @@
+{
+  "name": "@techstark/opencv-js",
+  "version": "5.0.0-release.1",
+  "description": "OpenCV JavaScript version for node.js or browser",
+  "main": "dist/opencv.js",
+  "types": "dist/src/index.d.ts",
+  "files": [
+    "dist/",
+    "src/"
+  ],
+  "scripts": {
+    "build": "tsc",
+    "prepack": "npm run build",
+    "format": "prettier --write \"src/**/*.ts\"",
+    "test": "NODE_OPTIONS=--experimental-vm-modules jest",
+    "test:compat": "node test/compat/run-all.mjs"
+  },
+  "devDependencies": {
+    "@types/jest": "^30.0.0",
+    "jest": "^30.0.0",
+    "jimp": "^1.6.1",
+    "prettier": "^3.8.4",
+    "ts-jest": "^29.4.11",
+    "typescript": "^6.0.3"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/TechStark/opencv-js.git"
+  },
+  "keywords": [
+    "opencv",
+    "javascript",
+    "computer vision"
+  ],
+  "author": "Wilson",
+  "license": "Apache-2.0",
+  "bugs": {
+    "url": "https://github.com/TechStark/opencv-js/issues"
+  },
+  "homepage": "https://github.com/TechStark/opencv-js#readme"
+}

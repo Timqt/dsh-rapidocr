@@ -1,0 +1,10 @@
+# Python benchmark virtualenv (recreate with `python -m venv bench/.venv`)
+bench/.venv/
+# Bench harness dependencies (recreate with `npm install` in bench/node)
+bench/node/node_modules/
+# Packed tarballs from `npm pack`
+*.tgz
+
+# Vendored runtime dependencies ARE committed on purpose: the published package
+# must be reproducible from a fresh clone and reviewable file by file.
+!packages/dsh-rapidocr/vendor/**

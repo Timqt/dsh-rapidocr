@@ -1,0 +1,98 @@
+{
+  "load_ms": 447.8,
+  "models_mb": 13.07,
+  "cases": [
+    {
+      "image": "dense_1920x1080.png",
+      "cold_ms": 1774.4,
+      "warm_median_ms": 1197.4,
+      "warm_all": [
+        1197.4,
+        1185.0,
+        1387.2,
+        1324.1,
+        1106.3
+      ],
+      "lines": 6,
+      "lines_expected": 6,
+      "exact_line_hits": "6/6",
+      "min_score": 0.8079,
+      "avg_score": 0.8825,
+      "rss_mb": 0.0,
+      "elapse": [
+        0.6264646053314209,
+        0.00684356689453125,
+        1.0363397598266602
+      ],
+      "text": [
+        "第1行:本地推理无需 GPU，模型体积约 15 MB",
+        "第 2 行:文本检测 DBNet +方向分类 + CRNN 识别",
+        "第3行：支持中英文混排，倾斜矫正",
+        "第 4 行: The quick brown fox jumps over the lazy dog",
+        "第5行：识别结果JSON结构化返回",
+        "第 6 行:插件形态为 Host bundle,inject tools"
+      ]
+    },
+    {
+      "image": "screenshot_1280x720.png",
+      "cold_ms": 914.5,
+      "warm_median_ms": 633.1,
+      "warm_all": [
+        908.3,
+        691.2,
+        629.0,
+        633.1,
+        626.9
+      ],
+      "lines": 6,
+      "lines_expected": 6,
+      "exact_line_hits": "5/6",
+      "min_score": 0.8727,
+      "avg_score": 0.8936,
+      "rss_mb": 0.0,
+      "elapse": [
+        0.30505847930908203,
+        0.005101680755615234,
+        0.5580055713653564
+      ],
+      "text": [
+        "系统设置／网络配置",
+        "IP地址：192.168.1.108",
+        "子网掩码：255.255.255.0",
+        "DNS: 223.5.5.5, 119.29.29.29",
+        "状态：已连接速度：100Mbps",
+        "Saved successfully at 09:42:11"
+      ]
+    },
+    {
+      "image": "zh_en_800x600.png",
+      "cold_ms": 1154.1,
+      "warm_median_ms": 668.6,
+      "warm_all": [
+        707.3,
+        687.3,
+        668.6,
+        619.8,
+        618.2
+      ],
+      "lines": 5,
+      "lines_expected": 5,
+      "exact_line_hits": "5/5",
+      "min_score": 0.8721,
+      "avg_score": 0.8992,
+      "rss_mb": 0.0,
+      "elapse": [
+        0.27803754806518555,
+        0.04995131492614746,
+        0.7762188911437988
+      ],
+      "text": [
+        "本地部署 RapidOCR 视觉识别",
+        "DeepSeekHarness插件评估报告",
+        "CPU inference: 12.5 ms / line",
+        "Order No.A-2024-0917 Total:1,280.00",
+        "联系电话138-0013-8000"
+      ]
+    }
+  ]
+}
