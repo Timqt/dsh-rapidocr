@@ -19,9 +19,9 @@ jobs:
         node: ['20', '22', '24']
 
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
 
-      - uses: actions/setup-node@v4
+      - uses: actions/setup-node@v6
         with:
           node-version: ${{ matrix.node }}
 
@@ -50,17 +50,27 @@ jobs:
         working-directory: packages/dsh-rapidocr
         run: node worker/selftest.js ../../bench/samples/screenshot_1280x720.png
 
-      - name: Run the CLI on the mixed-text sample
+      - name: Benchmark harness resolves the shared model directory
         working-directory: bench/node
-        run: node cli/ocr.js ../samples/zh_en_800x600.png
+        shell: pwsh
+        run: |
+          # Onnxruntime is not installed in CI, so exercise the dependency-free
+          # resolver instead of the full CLI: it must find the plugin's models.
+          $resolved = node -e "console.log(require('./src/modelDir').defaultModelDir())"
+          if ($LASTEXITCODE -ne 0) { exit 1 }
+          Write-Host "resolved: $resolved"
+          if ($resolved -notmatch 'packages[\\/]dsh-rapidocr[\\/]models') {
+            Write-Host "::error::bench no longer resolves the plugin bundle's models"
+            exit 1
+          }
 
   pack:
     name: npm pack manifest
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
 
-      - uses: actions/setup-node@v4
+      - uses: actions/setup-node@v6
         with:
           node-version: '22'
 

@@ -5,7 +5,6 @@
  * Port of rapidocr_onnxruntime/rapid_ocr_api.py
  */
 const path = require('path');
-const fs = require('fs');
 
 const { TextDetector, filterTagDetRes, sortedBoxes } = require('./det');
 const { TextClassifier } = require('./cls');
@@ -14,6 +13,7 @@ const { decodeImage, rgbToMat } = require('./image');
 const { rot90CCW } = require('./matops');
 const { readModelMetadata } = require('./onnxMetadata');
 const { pySplitLines, norm2 } = require('./util');
+const { defaultModelDir } = require('./modelDir');
 
 const GLOBAL_CFG = {
   text_score: 0.5,
@@ -22,33 +22,6 @@ const GLOBAL_CFG = {
   min_height: 30,
   width_height_ratio: 8,
 };
-
-/** Locate the bundled RapidOCR ONNX models. */
-function defaultModelDir() {
-  const candidates = [
-    path.join(__dirname, 'models'),
-    path.join(__dirname, '..', 'models'),
-    // The plugin bundle ships the same three models; reuse them instead of
-    // keeping a second 13 MB copy in the repository.
-    path.join(__dirname, '..', '..', '..', 'packages', 'dsh-rapidocr', 'models'),
-    path.join(
-      __dirname,
-      '..',
-      '..',
-      '.venv',
-      'Lib',
-      'site-packages',
-      'rapidocr_onnxruntime',
-      'models'
-    ),
-  ];
-  for (const dir of candidates) {
-    if (fs.existsSync(path.join(dir, 'ch_PP-OCRv3_det_infer.onnx'))) return dir;
-  }
-  throw new Error(
-    'ONNX models not found. Looked in:\n' + candidates.map((c) => '  ' + c).join('\n')
-  );
-}
 
 class RapidOCR {
   /**
