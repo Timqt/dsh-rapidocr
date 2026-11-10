@@ -1,0 +1,103 @@
+name: CI
+
+on:
+  push:
+    branches: [master]
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  selftest:
+    name: sidecar selftest (windows-latest / node ${{ matrix.node }})
+    runs-on: windows-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        node: ['20', '22', '24']
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: ${{ matrix.node }}
+
+      - name: Verify the vendored layout is intact
+        shell: pwsh
+        run: |
+          $missing = @()
+          foreach ($p in @(
+            'packages/dsh-rapidocr/index.js',
+            'packages/dsh-rapidocr/cordis.patch.yml',
+            'packages/dsh-rapidocr/worker/ocr-worker.js',
+            'packages/dsh-rapidocr/models/ch_PP-OCRv3_det_infer.onnx',
+            'packages/dsh-rapidocr/models/ch_PP-OCRv3_rec_infer.onnx',
+            'packages/dsh-rapidocr/models/ch_ppocr_mobile_v2.0_cls_infer.onnx',
+            'packages/dsh-rapidocr/vendor/node_modules/onnxruntime-node/bin/napi-v6/win32/x64/onnxruntime.dll'
+          )) {
+            if (-not (Test-Path $p)) { $missing += $p }
+          }
+          if ($missing.Count -gt 0) {
+            $missing | ForEach-Object { Write-Host "::error file=$_::missing required file" }
+            exit 1
+          }
+          Write-Host "all required files present"
+
+      - name: Run the sidecar selftest (whole pipeline, real child process)
+        working-directory: packages/dsh-rapidocr
+        run: node worker/selftest.js ../../bench/samples/screenshot_1280x720.png
+
+      - name: Run the CLI on the mixed-text sample
+        working-directory: bench/node
+        run: node cli/ocr.js ../samples/zh_en_800x600.png
+
+  pack:
+    name: npm pack manifest
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+
+      - name: Pack and check the published file list
+        working-directory: packages/dsh-rapidocr
+        run: |
+          set -euo pipefail
+          npm pack --json > pack.json
+          node -e '
+            const fs = require("fs");
+            const [info] = JSON.parse(fs.readFileSync("pack.json", "utf8"));
+            const paths = info.files.map((f) => f.path);
+            const required = [
+              "index.js",
+              "cordis.patch.yml",
+              "package.json",
+              "models/ch_PP-OCRv3_det_infer.onnx",
+              "models/ch_PP-OCRv3_rec_infer.onnx",
+              "models/ch_ppocr_mobile_v2.0_cls_infer.onnx",
+              "worker/ocr-worker.js",
+              "NOTICE",
+              "LICENSE",
+            ];
+            const missing = required.filter((p) => !paths.includes(p));
+            if (missing.length) {
+              console.error("missing from tarball:", missing);
+              process.exit(1);
+            }
+            const pkg = JSON.parse(fs.readFileSync("package.json", "utf8"));
+            const patch = pkg.dsh && pkg.dsh.bundle && pkg.dsh.bundle.patch;
+            if (!patch || !paths.includes(patch.replace(/^\.\//, ""))) {
+              console.error("dsh.bundle.patch not present in tarball:", patch);
+              process.exit(1);
+            }
+            if (pkg.main && !paths.includes(pkg.main)) {
+              console.error("main not present in tarball:", pkg.main);
+              process.exit(1);
+            }
+            console.log(`ok: ${paths.length} files, ${(info.size / 1048576).toFixed(1)} MiB packed`);
+          '

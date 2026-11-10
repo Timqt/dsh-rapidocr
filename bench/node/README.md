@@ -78,15 +78,22 @@ tools/bench_node.js benchmark harness -> report_node.json / report_node.md
 
 ## Models
 
-The three ONNX files are read from the RapidOCR package folder by default:
+The three ONNX files are reused from the plugin bundle, so the repository
+stores only one copy of the 13 MB of weights:
+
+```
+packages/dsh-rapidocr/models/
+```
+
+The loader checks, in order: `bench/node/src/models`, `bench/node/models`
+(optional local override), `packages/dsh-rapidocr/models`, and finally the
+RapidOCR Python package inside the venv:
 
 ```
 bench/.venv/Lib/site-packages/rapidocr_onnxruntime/models/
 ```
 
 Override with `--model-dir <path>` (the CLI) or `new RapidOCR({ modelDir })`.
-A copy can be placed in `bench/node/models/` as well — the loader checks
-`src/models`, `bench/node/models` and the venv folder in that order.
 
 ## Known gaps / caveats
 

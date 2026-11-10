@@ -1,6 +1,6 @@
 {
   "name": "dsh-rapidocr",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "Local CPU OCR for DeepSeek Harness: a model-facing ocr_image tool that reads text out of PNG and JPEG files on this machine, with no GPU, no network call and no vision model.",
   "license": "Apache-2.0",
   "type": "module",
@@ -43,10 +43,11 @@
     "url": "git+https://github.com/Timqt/dsh-rapidocr.git",
     "directory": "packages/dsh-rapidocr"
   },
-  "homepage": "https://github.com/Timqt/dsh-rapidocr/tree/main/packages/dsh-rapidocr#readme",
+  "homepage": "https://github.com/Timqt/dsh-rapidocr/tree/master/packages/dsh-rapidocr#readme",
   "bugs": "https://github.com/Timqt/dsh-rapidocr/issues",
   "engines": {
-    "dsh": ">=0.2.2-rc.1 <0.3.0-0"
+    "dsh": ">=0.2.2-rc.1 <0.3.0-0",
+    "node": ">=20"
   },
   "dsh": {
     "bundle": {

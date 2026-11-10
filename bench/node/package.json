@@ -1,6 +1,6 @@
 {
   "name": "rapidocr-node",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "Pure Node.js port of the RapidOCR (PP-OCRv3) CPU OCR pipeline - no Python, no native build step",
   "main": "src/ocr.js",
   "scripts": {
@@ -14,8 +14,9 @@
     "paddleocr",
     "onnxruntime"
   ],
-  "author": "",
-  "license": "ISC",
+  "author": "Timqt",
+  "license": "Apache-2.0",
+  "private": true,
   "type": "commonjs",
   "dependencies": {
     "@techstark/opencv-js": "^5.0.0-release.1",

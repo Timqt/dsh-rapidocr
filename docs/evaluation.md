@@ -215,7 +215,7 @@ ctx.tools.register({
 ## 附录：复现方式
 
 ```powershell
-cd D:\feiniukexinhome\Code\DSH-rapidocr\bench
+cd bench                                          # 仓库根目录下
 .\.venv\Scripts\python.exe bench_python.py       # Python 参考基准 -> report_python.json
 cd node
 npm install

@@ -28,6 +28,9 @@ function defaultModelDir() {
   const candidates = [
     path.join(__dirname, 'models'),
     path.join(__dirname, '..', 'models'),
+    // The plugin bundle ships the same three models; reuse them instead of
+    // keeping a second 13 MB copy in the repository.
+    path.join(__dirname, '..', '..', '..', 'packages', 'dsh-rapidocr', 'models'),
     path.join(
       __dirname,
       '..',

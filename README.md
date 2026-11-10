@@ -1,5 +1,8 @@
 # dsh-rapidocr
 
+[![Open Plugin Market](https://img.shields.io/endpoint?url=https%3A%2F%2Fdshopen.org%2Fbadge%2Fdsh-rapidocr.json)](https://dshopen.org/zh/plugins/dsh-rapidocr/)
+[![License: Apache-2.0](https://img.shields.io/badge/license-Apache--2.0-blue.svg)](LICENSE)
+
 **Local, offline OCR for [DeepSeek Harness](https://github.com/deepseek-ai/deepseek-harness).**
 
 A text-only model cannot look at an image. When a user attaches a screenshot to a
@@ -29,9 +32,11 @@ so the ~410 ms model load is paid once rather than per image.
 
 ## Install
 
-**Option A — Plugin market.** Once the plugin is listed in the
-[dsh-plugin-index](https://github.com/polang233/dsh-plugin-index) market, open
-DSH → *Plugins* → *Market* and install **Local OCR (dsh-rapidocr)**.
+**Option A — Open Plugin Market (recommended).** The plugin is listed and
+reviewed in the [dsh-plugin-index](https://github.com/polang233/dsh-plugin-index)
+market: add `https://dshopen.org/index.json` as an index source (*Plugins →
+Experimental Plugins → Custom plugin markets → Discover → Add index source*),
+then paste the name `dsh-rapidocr` in Discover to install it.
 
 **Option B — from a clone of this repository.** Add the package to your DSH
 profile and enable the bundle:
@@ -40,7 +45,7 @@ profile and enable the bundle:
 # 1. clone
 git clone https://github.com/Timqt/dsh-rapidocr.git
 
-# 2. point your profile at it
+# 2. point your profile at it, in
 #    %USERPROFILE%\.dsh\profiles\<profile>\package.json
 {
   "dependencies": {
@@ -120,6 +125,9 @@ packages/dsh-rapidocr/   the publishable plugin bundle
   locale/, icon.svg      Display metadata
 bench/                   Benchmark harness, reference images and baselines
 docs/                    Evaluation, implementation record and DSH API evidence
+.github/workflows/       CI: sidecar selftest, vendored-layout and tarball checks
+CHANGELOG.md             Release notes
+SECURITY.md              Security policy and private reporting
 ```
 
 The bundle has **zero npm dependencies, zero build scripts and zero install
@@ -135,6 +143,8 @@ a postinstall hook.
 | [docs/implementation.md](docs/implementation.md) | What was actually built, the sidecar protocol, the pitfalls hit on the way, and the remaining known gaps |
 | [docs/dsh-integration.md](docs/dsh-integration.md) | Evidence for the DSH plugin API (file and line references into the host) |
 | [packages/dsh-rapidocr/README.md](packages/dsh-rapidocr/README.md) | The plugin's own manual: configuration, testing, layout |
+| [CHANGELOG.md](CHANGELOG.md) | What changed in each release |
+| [SECURITY.md](SECURITY.md) | What the plugin can and cannot access, and how to report a vulnerability |
 
 ## Credits
 

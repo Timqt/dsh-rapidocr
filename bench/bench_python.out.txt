@@ -1,4 +1,4 @@
-﻿== package == D:\feiniukexinhome\Code\DSH-rapidocr\bench\.venv\Lib\site-packages\rapidocr_onnxruntime\__init__.py
+== package == bench\.venv\Lib\site-packages\rapidocr_onnxruntime\__init__.py
 == bundled models ==
    ch_PP-OCRv3_det_infer.onnx                   2.32 MB
    ch_PP-OCRv3_rec_infer.onnx                  10.20 MB

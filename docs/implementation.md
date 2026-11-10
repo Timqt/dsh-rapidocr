@@ -131,7 +131,7 @@ runExclusive(operation) {
 
 - 改动内容：仅在 `dsh.profile.bundles` 末尾追加 `"@local/dsh-rapidocr"`，其余字段原样保留。
 - 序列化格式与插件管理器一致（`JSON.stringify(manifest, undefined, 2) + "\n"`）。
-- 原文件已备份到 `C:\Users\Tim\.dsh\profiles\desktop\.plugin-manager\package.json.before-rapidocr-enable`。
+- 原文件已备份到 `%USERPROFILE%\.dsh\profiles\desktop\.plugin-manager\package.json.before-rapidocr-enable`。
 - 写入口径是 `bench/enable-bundle.mjs` / `bench/toggle-bundle.mjs`，可审计、可回滚。
 
 **重启 DSH 后应改用 Plugins 页面正常启用**，那条路径不受本故障影响。
@@ -143,4 +143,11 @@ runExclusive(operation) {
 - 待办（可选）：
   - 整页扫描件 9 秒 + 峰值内存 1.8 GB，建议加"长边超过 N 像素先自动降采样"的策略；目前是**超过 4000 万像素直接拒绝**，不是缩小后再识别。
   - WebP / AVIF 解码未支持，需要时加一个解码器即可。
-  - 仓库还没有任何 git commit（`.git` 是空仓库，工作区全部是未跟踪文件）。
+  - 目前只随包提供 `win32/x64` 的 ONNX Runtime 预编译二进制，其余平台需另加二进制。
+
+## 8. 发布状态
+
+- 源码仓库：<https://github.com/Timqt/dsh-rapidocr>（Apache-2.0，`master` 分支，当前版本 `0.1.1`，tag `v0.1.1`）
+- 已收录进开放插件市场：<https://dshopen.org/zh/plugins/dsh-rapidocr>（静态安全审查通过，安装来源为固定提交、子目录 `packages/dsh-rapidocr`）
+- 变更记录见根目录 `CHANGELOG.md`；安全策略见 `SECURITY.md`。
+- npm 包尚未发布（npmjs 要求 2FA 或带 bypass-2fa 的 granular token），因此市场按固定提交收录，升级需维护者复核新提交。

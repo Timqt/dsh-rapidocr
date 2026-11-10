@@ -1,7 +1,7 @@
 # DSH plugin integration surface — evidence for a local-OCR plugin
 
 Investigation date: 2026-11-06. Target: DeepSeek Harness **Desktop** `0.2.2-rc.1`, profile `desktop`
-(`C:\Users\Tim\.dsh\profiles\desktop`).
+(`%USERPROFILE%\.dsh\profiles\desktop`).
 
 ## 0. Environment facts (verified)
 
@@ -12,7 +12,7 @@ Investigation date: 2026-11-06. Target: DeepSeek Harness **Desktop** `0.2.2-rc.1
 | Node used by DSH runtime | `24.21.0` | `app.asar\dsh\desktop-runtime.json:7`; `D:\Softwares\deepseek\resources\runtime\versions.json` |
 | pnpm | `11.28.5` | `app.asar\dsh\desktop-runtime.json:8` |
 | Electron (Host process) | `44.7.0` | `D:\Softwares\deepseek\version` → `44.7.0`; `D:\Softwares\deepseek\LICENSE.electron.txt` |
-| Host profile dir | `C:\Users\Tim\.dsh\profiles\desktop` | `package.json` → `"name": "dsh-profile-desktop"` |
+| Host profile dir | `%USERPROFILE%\.dsh\profiles\desktop` | `package.json` → `"name": "dsh-profile-desktop"` |
 | Profile pnpm settings | `nodeLinker: hoisted`, `allowBuilds: {'@google/genai': true, protobufjs: true}` | `…\profiles\desktop\pnpm-workspace.yaml` |
 | Profile-installed `@deepseek-ai/*` | only `cosmokit`, `schemastery` | `…\profiles\desktop\node_modules\@deepseek-ai\` |
 
@@ -345,7 +345,7 @@ is host-file-backed.
 
 **How installation works** (`dsh-plugin-manager\README.md`):
 * `installBundle` runs **`pnpm add`** in the profile directory (line 64/68). Therefore the bundle's
-  `dependencies` are installed into `C:\Users\Tim\.dsh\profiles\desktop\node_modules` (hoisted linker —
+  `dependencies` are installed into `%USERPROFILE%\.dsh\profiles\desktop\node_modules` (hoisted linker —
   `pnpm-workspace.yaml` → `nodeLinker: hoisted`).
 * A **local directory** target installs as `link:<absolute workspace package directory>`
   (`dsh-plugin-manager\README.md:52`). For a linked directory, `files` in `package.json` does **not** filter
@@ -423,7 +423,7 @@ That same plugin also shows the **model-assets pattern**:
 (`cordis_inspect_query` → provider `Config`, method `listConfigs`, `input: { entry: "include:tool-fs" }`.)
 
   For a **profile-installed bundle**, `packageDir` will be
-  `C:\Users\Tim\.dsh\profiles\desktop\node_modules\<bundle-name>` (or the linked workspace directory when the
+  `%USERPROFILE%\.dsh\profiles\desktop\node_modules\<bundle-name>` (or the linked workspace directory when the
   bundle was installed as `link:`).
 
 * The bundle's own resolution order is *installation anchor first, then the profile directory*
@@ -892,4 +892,4 @@ async function runOcr(ctx, request) {
 | `app.asar\dsh\node_modules\@deepseek-ai\dsh-spill-policy\lib\index.js` | image-as-text convention |
 | `app.asar\dsh\node_modules\@deepseek-ai\dsh-agent-preset\skills\cordis-plugin-development\references\{host-plugin,practices,mcp-bundle}.md` | bundle manifest, `Config`/`configEditor`, practices |
 | `app.asar\dsh\desktop-runtime.json`, `app.asar\dsh\package.json`, `D:\Softwares\deepseek\version` | versions (DSH / Node / pnpm / Electron) |
-| `C:\Users\Tim\.dsh\profiles\desktop\{package.json,pnpm-workspace.yaml,node_modules}` | profile layout, `allowBuilds`, installed packages |
+| `%USERPROFILE%\.dsh\profiles\desktop\{package.json,pnpm-workspace.yaml,node_modules}` | profile layout, `allowBuilds`, installed packages |
