@@ -143,6 +143,7 @@ a postinstall hook.
 | [docs/implementation.md](docs/implementation.md) | What was actually built, the sidecar protocol, the pitfalls hit on the way, and the remaining known gaps |
 | [docs/dsh-integration.md](docs/dsh-integration.md) | Evidence for the DSH plugin API (file and line references into the host) |
 | [packages/dsh-rapidocr/README.md](packages/dsh-rapidocr/README.md) | The plugin's own manual: configuration, testing, layout |
+| [docs/publishing.md](docs/publishing.md) | How the npm release is produced (2FA, trusted publishing, release workflow) |
 | [CHANGELOG.md](CHANGELOG.md) | What changed in each release |
 | [SECURITY.md](SECURITY.md) | What the plugin can and cannot access, and how to report a vulnerability |
 

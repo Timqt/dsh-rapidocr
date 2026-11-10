@@ -1,0 +1,106 @@
+name: Publish to npm
+
+# Publishing uses npm "Trusted Publishing" (OIDC): no long-lived token is stored
+# in this repository or in GitHub secrets. It only works after a Trusted
+# Publisher entry exists on the package settings page at npmjs.com and points at
+# this repository and this workflow filename (publish.yml).
+#
+#   Organization or user : Timqt
+#   Repository           : dsh-rapidocr
+#   Workflow filename    : publish.yml
+#
+# See docs/publishing.md for the one-time setup.
+
+on:
+  push:
+    tags:
+      - 'v*'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  id-token: write # required for OIDC / trusted publishing
+
+jobs:
+  publish:
+    name: npm publish (trusted publishing)
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v5
+
+      - uses: actions/setup-node@v6
+        with:
+          node-version: '24'
+          registry-url: 'https://registry.npmjs.org'
+          package-manager-cache: false
+
+      - name: Ensure npm supports trusted publishing (>= 11.5.1)
+        run: |
+          set -euo pipefail
+          have=$(npm --version)
+          want=11.5.1
+          if [ "$(printf '%s\n%s\n' "$want" "$have" | sort -V | head -n1)" != "$want" ]; then
+            echo "npm $have is too old for trusted publishing; installing npm@latest"
+            npm install -g npm@latest
+          fi
+          echo "npm $(npm --version)"
+
+      - name: Check the tag matches package.json
+        working-directory: packages/dsh-rapidocr
+        run: |
+          set -euo pipefail
+          version=$(node -p "require('./package.json').version")
+          ref="${GITHUB_REF_NAME}"
+          echo "package version: $version / ref: $ref"
+          if [ "$ref" != "v$version" ]; then
+            echo "::error::tag $ref does not match package version $version"
+            exit 1
+          fi
+
+      - name: Verify the tarball manifest
+        working-directory: packages/dsh-rapidocr
+        run: |
+          set -euo pipefail
+          npm pack --json > pack.json
+          node -e '
+            const fs = require("fs");
+            const [info] = JSON.parse(fs.readFileSync("pack.json", "utf8"));
+            const paths = info.files.map((f) => f.path);
+            const required = [
+              "index.js",
+              "cordis.patch.yml",
+              "package.json",
+              "models/ch_PP-OCRv3_det_infer.onnx",
+              "models/ch_PP-OCRv3_rec_infer.onnx",
+              "models/ch_ppocr_mobile_v2.0_cls_infer.onnx",
+              "worker/ocr-worker.js",
+              "NOTICE",
+              "LICENSE",
+              "README.md",
+            ];
+            const missing = required.filter((p) => !paths.includes(p));
+            if (missing.length) {
+              console.error("missing from tarball:", missing);
+              process.exit(1);
+            }
+            const pkg = JSON.parse(fs.readFileSync("package.json", "utf8"));
+            const patch = pkg.dsh && pkg.dsh.bundle && pkg.dsh.bundle.patch;
+            if (!patch || !paths.includes(patch.replace(/^\.\//, ""))) {
+              console.error("dsh.bundle.patch not present in tarball:", patch);
+              process.exit(1);
+            }
+            console.log(`ok: ${paths.length} files, ${(info.size / 1048576).toFixed(1)} MiB`);
+          '
+          rm -f pack.json ./*.tgz
+
+      - name: Publish
+        working-directory: packages/dsh-rapidocr
+        run: npm publish --access public --provenance
+
+      - name: Summary
+        run: |
+          echo "### Published to npm" >> "$GITHUB_STEP_SUMMARY"
+          echo "" >> "$GITHUB_STEP_SUMMARY"
+          echo "- package: \`dsh-rapidocr@$(node -p "require('./packages/dsh-rapidocr/package.json').version")\`" >> "$GITHUB_STEP_SUMMARY"
+          echo "- https://www.npmjs.com/package/dsh-rapidocr" >> "$GITHUB_STEP_SUMMARY"
+          echo "- ref: \`${GITHUB_REF_NAME}\`" >> "$GITHUB_STEP_SUMMARY"
