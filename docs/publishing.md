@@ -26,15 +26,27 @@ access token with "Bypass 2FA" enabled for creating and publishing any package.
 1. **Enable 2FA on the account.** Without this, neither interactive publishing
    nor a bypass token will be accepted.
 
-   ```powershell
-   npm login --registry=https://registry.npmjs.org     # re-authenticate first
-   npm profile enable-2fa auth-and-writes
-   ```
+   npm offers two second factors; pick one when the settings page asks:
 
-   Or use the website: <https://www.npmjs.com/settings/timq/profile> →
-   *Two-Factor Authentication* → *Enable 2FA* → *Authorization and Writes*.
-   You need an authenticator app (1Password, Authy, Google Authenticator, …).
-   **Save the recovery codes** — losing them means losing the account.
+   | Method | What you use | Good for |
+   |---|---|---|
+   | **Authenticator app (TOTP)** | a 6-digit code from 1Password / Authy / Google Authenticator / Microsoft Authenticator | CLI publishing, because `--otp` accepts the code directly |
+   | **Security key (WebAuthn)** | Windows Hello (PIN / fingerprint / face), Touch ID, or a YubiKey | no shared secret to leak; the CLI opens a browser and you confirm there |
+
+   Website flow: <https://www.npmjs.com/settings/timq/profile> →
+   *Two-Factor Authentication* → **Enable 2FA** → confirm your password → choose
+   the method → *Authorization and Writes* (not "authorization only": writes are
+   what publishing needs).
+
+   **Save the recovery codes** somewhere other than the 2FA device — they are the
+   only way back in if the device is lost, and each works once. Be aware that
+   *using* a recovery code to log in triggers a **72-hour security hold** during
+   which publishing, token creation and settings changes are blocked, so keep the
+   device reachable for the release you are about to do.
+
+   The CLI can also do it (`npm profile enable-2fa auth-and-writes`), but it
+   still needs a working login token first, and the token in `~/.npmrc` has
+   expired, so the website is the shorter path here.
 
 2. **Publish the current version by hand** so the package exists on npmjs.com. A
    Trusted Publisher can only be configured on a package that already exists.
@@ -43,10 +55,13 @@ access token with "Bypass 2FA" enabled for creating and publishing any package.
 
    ```powershell
    cd D:\feiniukexinhome\Code\DSH-rapidocr\packages\dsh-rapidocr
-   npm publish --registry=https://registry.npmjs.org --access public --otp=<6-digit code>
+   npm publish --registry=https://registry.npmjs.org --access public
    ```
 
-   `--otp` takes the current code from your authenticator app.
+   With TOTP configured, append `--otp=<6-digit code>` (or let npm prompt you).
+   With a security key, npm opens a browser tab where you confirm with Windows
+   Hello — the `auth-type` in this profile is already `web`, which is what drives
+   that flow.
 
 3. **Add a Trusted Publisher** so later releases need no token at all:
    <https://www.npmjs.com/package/dsh-rapidocr/access> → *Trusted Publisher* →
